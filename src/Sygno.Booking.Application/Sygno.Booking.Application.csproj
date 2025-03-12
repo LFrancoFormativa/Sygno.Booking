@@ -15,10 +15,4 @@
     <ProjectReference Include="..\Sygno.Booking.Domain\Sygno.Booking.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataBase\Booking\Commands\" />
-    <Folder Include="DataBase\Booking\Queries\" />
-    <Folder Include="DataBase\Customer\Queries\" />
-  </ItemGroup>
-
 </Project>

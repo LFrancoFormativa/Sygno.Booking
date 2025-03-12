@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sygno.Booking.Application.DataBase.User.Queries.GetAllUser
 {
-    public class GetAllUserQuery: IGetAllUserQuery
+	public class GetAllUserQuery : IGetAllUserQuery
 	{
 		private readonly IDataBaseService _dataBaseService;
 		private readonly IMapper _mapper;

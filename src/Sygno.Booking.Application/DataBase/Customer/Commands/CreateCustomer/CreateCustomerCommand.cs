@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
 using Sygno.Booking.Domain.Entities.Customer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sygno.Booking.Application.DataBase.Customer.Commands.CreateCustomer
 {
-    public class CreateCustomerCommand: ICreateCustomerCommand
+	public class CreateCustomerCommand : ICreateCustomerCommand
 	{
-        private readonly IDataBaseService _dataBaseService;
-        private readonly IMapper _mapper;
+		private readonly IDataBaseService _dataBaseService;
+		private readonly IMapper _mapper;
 
 		public CreateCustomerCommand(IDataBaseService dataBaseService,
 			IMapper mapper)

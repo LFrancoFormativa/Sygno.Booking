@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sygno.Booking.Application.DataBase.User.Queries.GetUserById
+﻿namespace Sygno.Booking.Application.DataBase.User.Queries.GetUserById
 {
 	public class GetUserByIdModel
-    {
+	{
 		public int UserId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

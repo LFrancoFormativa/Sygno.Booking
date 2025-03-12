@@ -1,13 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sygno.Booking.Application.DataBase.User.Commands.UpdateUserPassword
 {
-    public class UpdateUserPasswordCommand: IUpdateUserPasswordCommand
+	public class UpdateUserPasswordCommand : IUpdateUserPasswordCommand
 	{
 		private readonly IDataBaseService _databaseService;
 		public UpdateUserPasswordCommand(IDataBaseService databaseService)

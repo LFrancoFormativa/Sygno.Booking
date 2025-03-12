@@ -1,15 +1,10 @@
 ﻿using Sygno.Booking.Domain.Entities.Booking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sygno.Booking.Domain.Entities.User
 {
-    public class UserEntity
-    {
-        public int UserId { get;set; }
+	public class UserEntity
+	{
+		public int UserId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string UserName { get; set; }

@@ -1,16 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sygno.Booking.Domain.Entities.Booking;
-using Sygno.Booking.Domain.Entities.Customer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sygno.Booking.Persistence.Configuration
 {
-    public class BookingConfiguration
-    {
+	public class BookingConfiguration
+	{
 		public BookingConfiguration(EntityTypeBuilder<BookingEntity> entitybuilder)
 		{
 			entitybuilder.HasKey(x => x.BookingId);

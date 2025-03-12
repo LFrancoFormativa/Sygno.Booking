@@ -1,14 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Sygno.Booking.Application.DataBase.User.Commands.DeleteUser
 {
-    public class DeleteUserCommand: IDeleteUserCommand
+	public class DeleteUserCommand : IDeleteUserCommand
 	{
 		private readonly IDataBaseService _databaseService;
 		public DeleteUserCommand(IDataBaseService databaseService)
@@ -16,9 +10,9 @@ namespace Sygno.Booking.Application.DataBase.User.Commands.DeleteUser
 			_databaseService = databaseService;
 		}
 
-		public async Task< bool> Execute(int userId)
+		public async Task<bool> Execute(int userId)
 		{
-			var entity = await _databaseService.User.FirstOrDefaultAsync(x=> x.UserId == userId);
+			var entity = await _databaseService.User.FirstOrDefaultAsync(x => x.UserId == userId);
 
 			if (entity == null)
 				return false;
