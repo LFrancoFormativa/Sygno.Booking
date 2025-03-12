@@ -4,6 +4,7 @@ using Sygno.Booking.Application.Configuration;
 using Sygno.Booking.Application.DataBase.Booking.Commands.CreateBooking;
 using Sygno.Booking.Application.DataBase.Booking.Queries.GetAllBookings;
 using Sygno.Booking.Application.DataBase.Booking.Queries.GetBookingsByDocumentNumber;
+using Sygno.Booking.Application.DataBase.Booking.Queries.GetBookingsByType;
 using Sygno.Booking.Application.DataBase.Customer.Commands.CreateCustomer;
 using Sygno.Booking.Application.DataBase.Customer.Commands.DeleteCustomer;
 using Sygno.Booking.Application.DataBase.Customer.Commands.UpdateCustomer;
@@ -49,10 +50,11 @@ namespace Sygno.Booking.Application
 			services.AddTransient<IGetCustomerByDocumentNumberQuery, GetCustomerByDocumentNumberQuery>();
 			#endregion
 
-			#region Booking
+			#region 
 			services.AddTransient<ICreateBookingCommand, CreateBookingCommand>();
 			services.AddTransient<IGetAllBookingsQuery, GetAllBookingsQuery>();
-			services.AddTransient<IGetBookingsByDocumentNumberQuery, GetBookingsByDocumentNumberQuery>(); 
+			services.AddTransient<IGetBookingsByDocumentNumberQuery, GetBookingsByDocumentNumberQuery>();
+			services.AddTransient<IGetBookingsByTypeQuery, GetBookingsByTypeQuery>();
 			#endregion
 
 			return services;

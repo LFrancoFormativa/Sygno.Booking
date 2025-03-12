@@ -10,6 +10,7 @@ using Sygno.Booking.Application.DataBase.User.Commands.UpdateUser;
 using Sygno.Booking.Application.DataBase.User.Queries.GetAllUser;
 using Sygno.Booking.Application.DataBase.User.Queries.GetUserById;
 using Sygno.Booking.Application.DataBase.User.Queries.GetUserByUserNameAndPassword;
+using Sygno.Booking.Domain.Entities.Booking;
 using Sygno.Booking.Domain.Entities.Customer;
 using Sygno.Booking.Domain.Entities.User;
 
@@ -36,7 +37,7 @@ namespace Sygno.Booking.Application.Configuration
 			#endregion
 
 			#region Booking
-			CreateMap<CustomerEntity, CreateBookingModel>().ReverseMap();			
+			CreateMap<BookingEntity, CreateBookingModel>().ReverseMap();			
 			#endregion
 		}
 	}
