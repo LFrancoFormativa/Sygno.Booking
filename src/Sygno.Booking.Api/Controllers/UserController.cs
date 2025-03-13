@@ -1,8 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sygno.Booking.Application.DataBase.User.Commands.CreateUser;
+using Sygno.Booking.Application.DataBase.User.Commands.DeleteUser;
+using Sygno.Booking.Application.DataBase.User.Commands.UpdateUser;
+using Sygno.Booking.Application.DataBase.User.Commands.UpdateUserPassword;
+using Sygno.Booking.Application.DataBase.User.Queries.GetAllUser;
+using Sygno.Booking.Application.DataBase.User.Queries.GetUserById;
+using Sygno.Booking.Application.DataBase.User.Queries.GetUserByUserNameAndPassword;
 using Sygno.Booking.Application.Exceptions;
 using Sygno.Booking.Application.Features;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Sygno.Booking.Api.Controllers
 {
@@ -11,18 +19,88 @@ namespace Sygno.Booking.Api.Controllers
 	[TypeFilter(typeof(ExceptionManager))]
     public class UserController : ControllerBase
     {
-		public UserController()
+		[HttpPost("create")]		
+		public async Task<IActionResult> Create(
+			[FromBody] CreateUserModel model,
+			[FromServices] ICreateUserCommand createUserCommand)
 		{
+			var data = await createUserCommand.Execute(model);
 
+			return StatusCode(StatusCodes.Status201Created, ResponseApiService.Response(StatusCodes.Status201Created, data));
 		}
 
-		[HttpPost]		
-		public async Task<IActionResult> test()
+		[HttpPut("update")]
+		public async Task<IActionResult> Update(
+			[FromBody] UpdateUserModel model,
+			[FromServices] IUpdateUserCommand updateUserCommand)
 		{
-			var number = int.Parse("hola");
+			var data = await updateUserCommand.Execute(model);
 
-			return StatusCode(StatusCodes.Status200OK,
-				ResponseApiService.Response(StatusCodes.Status200OK, "{}", "Ejecucion Exitosa"));
+			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
+		}
+
+		[HttpPut("update-password")]
+		public async Task<IActionResult> Updatepassword(
+			[FromBody] UpdateUserPasswordModel model,
+			[FromServices] IUpdateUserPasswordCommand updateUserPasswordCommand)
+		{
+			var data = await updateUserPasswordCommand.Execute(model);
+			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
+		}
+
+		[HttpDelete("delete/{userId}")]
+		public async Task<IActionResult> Delete(
+			int userId,
+			[FromServices] IDeleteUserCommand deleteUserCommand)
+		{
+			if (userId == 0)
+				return StatusCode(StatusCodes.Status400BadRequest, ResponseApiService.Response(StatusCodes.Status400BadRequest));
+
+			var data = await deleteUserCommand.Execute(userId);
+
+			if(!data)
+				return StatusCode(StatusCodes.Status404NotFound, ResponseApiService.Response(StatusCodes.Status404NotFound, data));
+
+			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
+		}
+
+		[HttpGet("get-all")]
+		public async Task<IActionResult> GetAll([FromServices] IGetAllUserQuery getAllUserQuery)
+		{
+			var data = await getAllUserQuery.Execute();
+
+			if(data == null || data.Count == 0)
+				return StatusCode(StatusCodes.Status404NotFound, ResponseApiService.Response(StatusCodes.Status404NotFound, data));
+
+			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
+		}
+
+		[HttpGet("get-by-id/{userId}")]
+		public async Task<IActionResult> GetbyId(
+			int userId,
+			[FromServices] IGetUserByIdQuery getUserByIdQuery) { 
+			if(userId == 0)
+				return StatusCode(StatusCodes.Status400BadRequest, ResponseApiService.Response(StatusCodes.Status400BadRequest));
+
+			var data = await getUserByIdQuery.Execute(userId);
+
+			if(data == null)
+				return StatusCode(StatusCodes.Status404NotFound, ResponseApiService.Response(StatusCodes.Status404NotFound));
+
+			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
+		}
+
+		[HttpGet("get-by-username-password/{userName}/{password}")]
+		public async Task<IActionResult> GetByUserNamePassword(
+			string userName, string Password,
+			[FromServices] IGetUserByUserNameAndPasswordQuery getUserByUserNameAndPasswordQuery)
+		{
+			var data = await getUserByUserNameAndPasswordQuery.Execute(userName, Password);
+
+			if(data == null)
+				return StatusCode(StatusCodes.Status404NotFound, ResponseApiService.Response(StatusCodes.Status404NotFound));
+
+			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
 		}
 	}
 }
