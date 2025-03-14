@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Sygno.Booking.Application.Configuration;
 using Sygno.Booking.Application.DataBase.Booking.Commands.CreateBooking;
@@ -18,6 +19,7 @@ using Sygno.Booking.Application.DataBase.User.Commands.UpdateUserPassword;
 using Sygno.Booking.Application.DataBase.User.Queries.GetAllUser;
 using Sygno.Booking.Application.DataBase.User.Queries.GetUserById;
 using Sygno.Booking.Application.DataBase.User.Queries.GetUserByUserNameAndPassword;
+using Sygno.Booking.Application.Validators.User;
 
 namespace Sygno.Booking.Application
 {
@@ -50,11 +52,18 @@ namespace Sygno.Booking.Application
 			services.AddTransient<IGetCustomerByDocumentNumberQuery, GetCustomerByDocumentNumberQuery>();
 			#endregion
 
-			#region 
+			#region Booking
 			services.AddTransient<ICreateBookingCommand, CreateBookingCommand>();
 			services.AddTransient<IGetAllBookingsQuery, GetAllBookingsQuery>();
 			services.AddTransient<IGetBookingsByDocumentNumberQuery, GetBookingsByDocumentNumberQuery>();
 			services.AddTransient<IGetBookingsByTypeQuery, GetBookingsByTypeQuery>();
+			#endregion
+
+			#region Validator
+			services.AddScoped<IValidator<CreateUserModel>, CreateUserValidator>();
+			services.AddScoped<IValidator<UpdateUserModel>, UpdateUserValidator>();
+			services.AddScoped<IValidator<UpdateUserPasswordModel>, UpdateUserPasswordValidator>();
+			services.AddScoped<IValidator<(string, string)>, GetUserByUserNameAndPasswordValidator>();
 			#endregion
 
 			return services;

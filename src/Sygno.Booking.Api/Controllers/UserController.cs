@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sygno.Booking.Application.DataBase.User.Commands.CreateUser;
@@ -10,6 +11,7 @@ using Sygno.Booking.Application.DataBase.User.Queries.GetUserById;
 using Sygno.Booking.Application.DataBase.User.Queries.GetUserByUserNameAndPassword;
 using Sygno.Booking.Application.Exceptions;
 using Sygno.Booking.Application.Features;
+using System.ComponentModel.DataAnnotations;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Sygno.Booking.Api.Controllers
@@ -22,8 +24,14 @@ namespace Sygno.Booking.Api.Controllers
 		[HttpPost("create")]		
 		public async Task<IActionResult> Create(
 			[FromBody] CreateUserModel model,
-			[FromServices] ICreateUserCommand createUserCommand)
+			[FromServices] ICreateUserCommand createUserCommand,
+			[FromServices] IValidator<CreateUserModel> validator)
 		{
+			var validate = await validator.ValidateAsync(model);
+
+			if(!validate.IsValid)
+				return StatusCode(StatusCodes.Status400BadRequest, ResponseApiService.Response(StatusCodes.Status400BadRequest, validate.Errors));
+
 			var data = await createUserCommand.Execute(model);
 
 			return StatusCode(StatusCodes.Status201Created, ResponseApiService.Response(StatusCodes.Status201Created, data));
@@ -32,8 +40,14 @@ namespace Sygno.Booking.Api.Controllers
 		[HttpPut("update")]
 		public async Task<IActionResult> Update(
 			[FromBody] UpdateUserModel model,
-			[FromServices] IUpdateUserCommand updateUserCommand)
+			[FromServices] IUpdateUserCommand updateUserCommand,
+			[FromServices] IValidator<UpdateUserModel> validator)
 		{
+			var validate = await validator.ValidateAsync(model);
+
+			if (!validate.IsValid)
+				return StatusCode(StatusCodes.Status400BadRequest, ResponseApiService.Response(StatusCodes.Status400BadRequest, validate.Errors));
+
 			var data = await updateUserCommand.Execute(model);
 
 			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
@@ -42,8 +56,14 @@ namespace Sygno.Booking.Api.Controllers
 		[HttpPut("update-password")]
 		public async Task<IActionResult> Updatepassword(
 			[FromBody] UpdateUserPasswordModel model,
-			[FromServices] IUpdateUserPasswordCommand updateUserPasswordCommand)
+			[FromServices] IUpdateUserPasswordCommand updateUserPasswordCommand,
+			[FromServices] IValidator<UpdateUserPasswordModel> validator)
 		{
+			var validate = await validator.ValidateAsync(model);
+
+			if (!validate.IsValid)
+				return StatusCode(StatusCodes.Status400BadRequest, ResponseApiService.Response(StatusCodes.Status400BadRequest, validate.Errors));
+
 			var data = await updateUserPasswordCommand.Execute(model);
 			return StatusCode(StatusCodes.Status200OK, ResponseApiService.Response(StatusCodes.Status200OK, data));
 		}
@@ -93,8 +113,14 @@ namespace Sygno.Booking.Api.Controllers
 		[HttpGet("get-by-username-password/{userName}/{password}")]
 		public async Task<IActionResult> GetByUserNamePassword(
 			string userName, string Password,
-			[FromServices] IGetUserByUserNameAndPasswordQuery getUserByUserNameAndPasswordQuery)
+			[FromServices] IGetUserByUserNameAndPasswordQuery getUserByUserNameAndPasswordQuery,
+			[FromServices] IValidator<(string,string)> validator)
 		{
+			var validate = await validator.ValidateAsync((userName, Password));
+
+			if (!validate.IsValid)
+				return StatusCode(StatusCodes.Status400BadRequest, ResponseApiService.Response(StatusCodes.Status400BadRequest, validate.Errors));
+
 			var data = await getUserByUserNameAndPasswordQuery.Execute(userName, Password);
 
 			if(data == null)
