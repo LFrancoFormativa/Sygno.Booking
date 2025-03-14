@@ -19,6 +19,8 @@ using Sygno.Booking.Application.DataBase.User.Commands.UpdateUserPassword;
 using Sygno.Booking.Application.DataBase.User.Queries.GetAllUser;
 using Sygno.Booking.Application.DataBase.User.Queries.GetUserById;
 using Sygno.Booking.Application.DataBase.User.Queries.GetUserByUserNameAndPassword;
+using Sygno.Booking.Application.Validators.Booking;
+using Sygno.Booking.Application.Validators.Customer;
 using Sygno.Booking.Application.Validators.User;
 
 namespace Sygno.Booking.Application
@@ -64,6 +66,12 @@ namespace Sygno.Booking.Application
 			services.AddScoped<IValidator<UpdateUserModel>, UpdateUserValidator>();
 			services.AddScoped<IValidator<UpdateUserPasswordModel>, UpdateUserPasswordValidator>();
 			services.AddScoped<IValidator<(string, string)>, GetUserByUserNameAndPasswordValidator>();
+
+			services.AddScoped<IValidator<CreateCustomerModel>, CreateCustomerValidator>();
+			services.AddScoped<IValidator<UpdateCustomerModel>, UpdateCustomerValidator>();
+
+
+			services.AddScoped<IValidator<CreateBookingModel>, CreateBookingValidator>();
 			#endregion
 
 			return services;

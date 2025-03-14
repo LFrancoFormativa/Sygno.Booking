@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sygno.Booking.Application.DataBase.Booking.Commands.CreateBooking;
 using Sygno.Booking.Application.DataBase.Booking.Queries.GetAllBookings;
@@ -18,8 +19,14 @@ namespace Sygno.Booking.Api.Controllers
 		[HttpPost("create")]
 		public async Task<IActionResult> Create(
 			[FromBody] CreateBookingModel model,
-			[FromServices] ICreateBookingCommand createBookingCommand)
+			[FromServices] ICreateBookingCommand createBookingCommand,
+			[FromServices] IValidator<CreateBookingModel> validator)
 		{
+			var validate = await validator.ValidateAsync(model);
+
+			if (!validate.IsValid)
+				return StatusCode(StatusCodes.Status400BadRequest, ResponseApiService.Response(StatusCodes.Status400BadRequest, validate.Errors));
+
 			var data = await createBookingCommand.Execute(model);
 
 			return StatusCode(StatusCodes.Status201Created, ResponseApiService.Response(StatusCodes.Status201Created, data));
